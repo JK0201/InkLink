@@ -17,12 +17,11 @@ const socket = async (server) => {
       transports: ['websocket', 'polling'],
       credentials: true,
     },
-    // pingTimeout: 50000,
-    // pingInterval: 50000,
   });
 
   io.on('connection', async (socket) => {
-    console.log('Socket >>> Connected ' + socket.id + '\n' + JSON.stringify(socket.handshake.query));
+    // console.log('Socket >>> Connected ' + socket.id + "\n" + JSON.stringify(socket.handshake.query));
+    
 
     let v = await verify(socket.handshake.query.eong);
     if (!v) {
@@ -30,6 +29,8 @@ const socket = async (server) => {
       socket.disconnect(true);
       return;
     } else {
+      const room = socket.handshake.query.location;
+      // console.log(room);
       let data = {
         nick: v.nick,
         total: v.total,
@@ -37,19 +38,19 @@ const socket = async (server) => {
         profile: v.profile,
         role: v.role,
         socket_id: socket.id,
-        location: socket.handshake.query.location,
+        location: game.getRoomById(room) ? room : 'main'
       };
+      console.log(`${socket.id} + ${data.location}`);
       game.connectUser(data);
+      game.changeLocation(io,socket,data.location);
+      // socket.join(data.location);
       socket.emit('initSocket', { id: data.socket_id, loc: data.location });
+      
     }
-
-    socket.on('enterLobby', () => {
-      io.emit('getListData', game.getAlls());
-    });
 
     socket.on('disconnect', () => {
       console.log('Socket >>> Disconnected : ' + socket.id);
-      game.disconnectUser(socket.id);
+      game.disconnectUser(io, socket.id);
     });
 
     chatController.socket(socket, io, game);

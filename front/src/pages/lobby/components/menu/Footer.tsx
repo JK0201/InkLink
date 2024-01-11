@@ -5,6 +5,7 @@ import { mainMenu } from '../../../../api/menu';
 import { userDataAtom } from '../../../../recoil/user';
 import { lobbyChat } from '../../../../recoil/chat';
 import { socketAtom } from '../../../../recoil/socket';
+import { useEffect } from 'react';
 
 function Footer() {
   const [main, setMain] = useRecoilState(mainModal);
@@ -15,20 +16,14 @@ function Footer() {
 
   const mainMenuHandler = async (type: string) => {
     mainMenu(type, main, setMain);
-
-    if (type === 'chat' && !main.chat) {
-      socket?.emit('lobbyChat');
-
-      socket?.on('enterLobbyChat', (data) => {
-        console.log(data);
-        setChat((prevChat) => [...prevChat, data]);
-      });
-    }
-
-    return () => {
-      socket?.off('enterLobbyChat');
-    };
   };
+
+  useEffect(() => {
+    socket?.on('postChat', (data) => {
+      // console.log(data);
+      setChat((prevChat) => [...prevChat, data]);
+    });
+  }, []);
 
   const signOutHandler = () => {
     setDetail({ ...detail, signOut: true });

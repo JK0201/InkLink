@@ -34,7 +34,7 @@ function Lobby() {
   }, []);
 
   useEffect(() => {
-    socket?.emit('enterLobby');
+    // socket?.emit('enterLobby');
 
     socket?.on('getListData', (data): void => {
       console.log(data);
@@ -54,15 +54,15 @@ function Lobby() {
     };
   }, [socket, notice]);
 
-  useEffect(() => {
-    socket?.on('broadcastLobby', (data) => {
-      setChat((prevChat) => [...prevChat, data]);
-    });
+  // useEffect(() => {
+    // socket?.on('broadcastLobby', (data) => {
+    //   setChat((prevChat) => [...prevChat, data]);
+    // });
 
-    return () => {
-      socket?.off('broadcastLobby');
-    };
-  }, [chat]);
+    // return () => {
+    //   socket?.off('broadcastLobby');
+    // };
+  // }, [chat]);
 
   const mobileMenuHandler = () => {
     setMenu(false);

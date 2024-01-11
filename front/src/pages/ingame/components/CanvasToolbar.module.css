@@ -4,15 +4,18 @@
     border: 1px solid #ccc;
     max-width: 100%;
     border-radius: 10px 10px 0px 0px;
-    
+
     background: white linear-gradient(180deg, rgba(238, 238, 238, 0.00) 0%, #CCC 99.99%, rgba(238, 238, 238, 0.00) 100%);
     height: 48px;
     overflow: hidden;
-    justify-content: normal !important;
+
     z-index: 2;
 }
+
 .wrapper * {
     user-select: none;
+    justify-content: center;
+    align-items: center;
 }
 
 .tools,
@@ -30,9 +33,11 @@
     transition: scale ease-out 0.2s;
     filter: grayscale() contrast(0.6);
 }
-.undos{
+
+.undos {
     transition: scale ease-out 0.2s;
 }
+
 .undos:hover,
 .toolitem:hover,
 .colorOutter:hover {

@@ -9,7 +9,7 @@ async function connect(table) {
     try {
         mongo = await new MongoClient(process.env.MONGO).connect();
         
-        console.info(`* DB 'ink' Connected`);
+        // console.info(`* DB 'ink' Connected`);
         let res = mongo.db('ink');
         return res.collection(table);
     }

@@ -1,9 +1,9 @@
-.Wrapper{
+.Wrapper {
     position: absolute;
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
-    color:#eee;
+    color: #eee;
     -webkit-text-stroke: 1px #000;
     font-size: 4rem;
     font-weight: bolder;
@@ -12,11 +12,92 @@
     z-index: 3;
 }
 
-.navi{
+.optionWrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #eee;
+    -webkit-text-stroke: 1px #000;
+    font-size: 4rem;
+    font-weight: bolder;
+    flex-direction: column;
+    /* justify-content: initial !important; */
+    /* align-items: initial; */
+    z-index: 3;
+    /* padding: */
+}
+
+.navi {
     /* position:absolute; */
-    bottom:50px;
-    background-color:rgba(0, 0, 0, 0.4);
-    height:100px;
-    width:100%;
-    gap:10px;
+    bottom: 50px;
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100px;
+    width: 100%;
+    gap: 10px;
+}
+
+.options {
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 1rem;
+    font-size: 3rem;
+    /* height:50px; */
+}
+
+.options:not(:last-child) {
+    border-bottom: 1px solid black;
+}
+
+.customOption {
+    flex-direction: column;
+    height: 100%;
+    padding-bottom: 5px;
+}
+
+.customOption>div {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.customOption>textarea {
+    width: 100%;
+    height: 100%;
+    font-size: 3rem;
+    /* color: black; */
+    -webkit-text-stroke: initial;
+    resize: none;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked+.lbl {
+    background-color: green;
+}
+
+.options select {
+    font-size: 2.5rem;
+    min-width: 100px;
+    text-align: center;
+}
+
+.lbl {
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 0.9em;
+    padding: 0px 5px;
+    transition: background-color ease-in 0.2s;
+    cursor:pointer;
+}
+.lbl:hover{
+    background-color: rgba(0,255,0,0.2);
+}
+
+.button{
+    margin:5px;
+    -webkit-text-stroke: initial;
+    font-size: 3.5rem !important;
+    height:auto !important;
 }

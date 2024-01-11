@@ -5,6 +5,7 @@ import Popup1 from './Popup1';
 import { useRecoilState } from 'recoil';
 import { canvasStateAtom } from '../../../recoil/canvas';
 import { CanvasLogs, c2h, floodFill } from '../../../api/canvas';
+import Popup2 from './Popup2';
 
 
 const CanvasPart = () => {
@@ -183,6 +184,7 @@ const CanvasPart = () => {
     return (
         <div className={style.wrapper}>
             {/* <Popup1/> */}
+            <Popup2/>
             <canvas className={style.canvas} width={800} height={600} ref={canvasRef}
                 onMouseDown={startDraw}
                 onMouseUp={stopDraw}
