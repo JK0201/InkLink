@@ -53,7 +53,7 @@ const socket = async (server) => {
     });
 
     chatController.socket(socket, io, game);
-    // roomController.socket(socket, io, roomList, connectedUsers);
+    roomController.socket(socket, io, game);
     // roomController.sk(socket, io, game);
   });
 };

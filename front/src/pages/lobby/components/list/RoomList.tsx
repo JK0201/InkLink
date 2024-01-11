@@ -62,18 +62,22 @@ function RoomList() {
         </div>
         <div className={style.list}>
           {room.map((item, idx) => {
-            let roomNum: number = item.roomNum.toString().length;
+            let roomNumber: number = item.roomNumber.toString().length;
 
             return (
               <div key={idx} className={style.list_item}>
                 <div className={style.list_item_left}>
                   <div className={style.room_no}>
-                    {roomNum === 1 ? '00' + item.roomNum : roomNum === 2 ? '0' + item.roomNum : item.roomNum}
+                    {roomNumber === 1
+                      ? '00' + item.roomNumber
+                      : roomNumber === 2
+                      ? '0' + item.roomNumber
+                      : item.roomNumber}
                   </div>
                   <div className={style.room_user}>
                     <img alt="user-icon" src={process.env.REACT_APP_BUCKET_URL + 'icons/user_icon.svg'} />
                     <p>
-                      {item.curUser}/{item.maxUser}
+                      {item.currentUser}/{item.maxUser}
                     </p>
                   </div>
                 </div>
@@ -85,17 +89,17 @@ function RoomList() {
                     ) : null}
                   </div>
                   <div className={style.room_status}>
-                    {item.waiting ? (
+                    {item.status === 0 ? (
                       <>
                         <p className={style.waiting}>WAITING</p>
-                        <div className={style.enter_btn} onClick={() => joinRoom(item.roomId)}>
+                        <div className={style.enter_btn} onClick={() => joinRoom(item.id)}>
                           입장
                         </div>
                       </>
                     ) : (
                       <>
                         <p className={style.playing}>PLAYING</p>
-                        <div className={style.enter_btn} onClick={() => joinRoom(item.roomId)}>
+                        <div className={style.enter_btn} onClick={() => joinRoom(item.id)}>
                           입장
                         </div>
                       </>

@@ -34,15 +34,15 @@ const userDetail = atom<userData>({
 const roomInfo = atom<RoomInfoType>({
   key: 'roomInfo',
   default: {
-    roomNum: 0,
-    roomId: '',
+    roomNumber: 0,
+    id: '',
     title: '',
-    curUser: 0,
+    currentUser: 0,
     maxUser: 8,
     userList: [],
     private: false,
     password: '',
-    waiting: true,
+    status: 0,
   },
 });
 

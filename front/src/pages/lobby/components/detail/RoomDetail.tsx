@@ -47,7 +47,7 @@ function RoomDetail() {
       return;
     }
 
-    socket?.emit('createRoom', { room, userData });
+    socket?.emit('createRoom', room);
     closeRoomCreator();
 
     socket?.on('enterRoom', (url) => {

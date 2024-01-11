@@ -34,13 +34,13 @@ interface LobbyChatType {
 }
 
 interface RoomInfoType {
-  roomNum: number;
-  roomId: string;
+  roomNumber: number;
+  id: string;
   title: string;
-  curUser: number;
+  currentUser: number;
   maxUser: number;
   userList: string[];
   private: boolean;
   password: string;
-  waiting: boolean;
+  status: number;
 }

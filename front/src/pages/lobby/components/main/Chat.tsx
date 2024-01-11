@@ -5,16 +5,21 @@ import { useEffect, useRef, useState } from 'react';
 import { closeHandler, modalHandler } from '../../../../api/modal';
 import { lobbyChat } from '../../../../recoil/chat';
 import { socketAtom } from '../../../../recoil/socket';
-import { userDataAtom } from '../../../../recoil/user';
 
 function Chat() {
   const [main, setMain] = useRecoilState(mainModal);
   const [visible, setVisible] = useState<string>(style.d_hide);
   const [fade, setFade] = useState<string>(style.fade_out);
   const socket = useRecoilValue(socketAtom);
-  const chat = useRecoilValue(lobbyChat);
-  const userData = useRecoilValue(userDataAtom);
+  const [chat, setChat] = useRecoilState(lobbyChat);
   const msgRef = useRef<HTMLInputElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current && main.chat) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [chat]);
 
   useEffect(() => {
     modalHandler(style, main.chat, setVisible, setFade);
@@ -44,7 +49,7 @@ function Chat() {
       </div>
       <div className={style.detail_box_bottom}>
         <div className={style.detail}>
-          <div className={style.chat_field}>
+          <div className={style.chat_field} ref={scrollRef}>
             <div className={style.chat_content}>
               {chat.map((item, idx) => {
                 return item.type === 'notice' ? (

@@ -25,6 +25,7 @@ var Room = /** @class */ (function () {
     Room.prototype.infoForList = function () {
         return {
             id: this._id,
+            roomNumber: this._roomNumber,
             title: this._title,
             currentUser: this._users.length,
             maxUser: this._setting.max,
