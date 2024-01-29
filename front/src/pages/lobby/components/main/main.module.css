@@ -384,7 +384,7 @@
   font-size: 3.2rem;
   color: #ffffff;
   overflow: auto;
-  scrollbar-gutter: stable;
+  /* scrollbar-gutter: stable; */
 }
 
 .member_detail {
@@ -395,7 +395,7 @@
   min-height: 295px;
   max-height: 295px;
   overflow: auto;
-  scrollbar-gutter: stable;
+  /* scrollbar-gutter: stable; */
 }
 
 .input_grp_gutter {
@@ -449,6 +449,31 @@
 }
 
 .search_btn:hover {
+  background-color: #454545;
+}
+
+.user_btn,
+.user_btn_disabled {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  width: 9rem;
+  height: 4rem;
+  padding: 0 1rem;
+  background-color: #656565;
+  font-size: 3.2rem;
+  color: #ffffff;
+  margin: 0 1rem;
+}
+
+.user_btn_disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.user_btn:hover {
   background-color: #454545;
 }
 

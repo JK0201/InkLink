@@ -28,6 +28,7 @@ const userDetail = atom<userData>({
     role: 0,
     item: [],
     location: '',
+    roomNumber: 0,
   },
 });
 
@@ -51,4 +52,20 @@ const roomList = atom<RoomInfoType[]>({
   default: [],
 });
 
-export { noticeList, noticeDetail, userDetail, roomInfo, roomList };
+const roomPassword = atom<RoomPassType>({
+  key: 'roomPassword',
+  default: {
+    id: '',
+    password: '',
+  },
+});
+
+const newIncomingData = atom<IncomingDataType>({
+  key: 'newIncomingData',
+  default: {
+    rooms: [],
+    users: [],
+  },
+});
+
+export { noticeList, noticeDetail, userDetail, roomInfo, roomList, roomPassword, newIncomingData };

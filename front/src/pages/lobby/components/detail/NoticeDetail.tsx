@@ -17,19 +17,19 @@ function NoticeDetail() {
     }
   }, [detail.notice]);
 
-  const closeNotice = () => {
+  const noticeHandler = () => {
     setdetail({ ...detail, notice: false });
     setVisible('');
     setHide('d_hide');
   };
 
   return (
-    <div className={`detail_modal_bg ${visible}`} onClick={closeNotice}>
+    <div className={`detail_modal_bg ${visible}`} onClick={noticeHandler}>
       <div className="detail_modal_box">
         <div className={`detail_modal ${hide}`} onClick={(e) => e.stopPropagation()}>
           <p className={style.title}>[{notice.type}]</p>
           <div className={style.btn_box}>
-            <div className={style.sign_out_btn} onClick={closeNotice}>
+            <div className={style.sign_out_btn} onClick={noticeHandler}>
               취소
             </div>
             <div className={`${style.sign_out_btn} ${style.btn_main}`}>확인</div>

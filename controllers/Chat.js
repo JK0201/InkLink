@@ -15,7 +15,7 @@ exports.chatController = {
       const sender = game.getNickBySocketID(socket.id);
       //닉없으면 무효
       if (!sender) return;
-      
+
       /*
       room !== 'main' 이면 인게임 채팅이므로
       세가지 로직 처리 필요
@@ -24,31 +24,12 @@ exports.chatController = {
       3. 출제자일 경우 채팅금지.
       */
 
-
       //마지막으로 채팅을 해당 방에 속한 모든 유저에게 뿌려준다.
       io.to(room).emit('postChat', {
         type: 'chat',
         user: sender,
-        msg: data.msg
+        msg: data.msg,
       });
     });
-
-    // const chat = new Chat();
-    // socket.on('lobbyChat', () => {
-    //   if (!chat.connected) {
-    //     chat.joinRoom(socket.id, game, 'enter', 'main');
-    //     socket.join(chat.location);
-    //     io.to(chat.location).emit('enterLobbyChat', chat);
-    //   }
-    // });
-
-    // socket.on('lobbyMsg', (data) => {
-    //   if (!data.msg || data.msg.length > 60) {
-    //     return;
-    //   }
-    //   chat.sendMessage(data.msg);
-    //   console.log(`${socket.id} ${chat.user} >> ${data.msg}`);
-    //   io.to(chat.location).emit('broadcastLobby', chat);
-    // });
   },
 };

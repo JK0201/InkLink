@@ -23,6 +23,7 @@ const listModal = atom<ListType>({
 const detailModal = atom<DetailType>({
   key: 'detailModal',
   default: {
+    password: false,
     signOut: false,
     notice: false,
     user: false,
@@ -40,4 +41,14 @@ const mobileModal = atom<boolean>({
   default: false,
 });
 
-export { mainModal, listModal, mobileModal, detailModal, shopTabHandler };
+const refreshRoom = atom<boolean>({
+  key: 'refreshRoom',
+  default: true,
+});
+
+const refreshUser = atom<boolean>({
+  key: 'refreshUser',
+  default: true,
+});
+
+export { mainModal, listModal, mobileModal, detailModal, shopTabHandler, refreshRoom, refreshUser };

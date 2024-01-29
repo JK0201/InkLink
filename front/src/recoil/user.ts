@@ -12,6 +12,7 @@ const userDataAtom = atom<userData>({
     role: 0,
     item: [],
     location: '',
+    roomNumber: 0,
   },
 });
 
@@ -26,8 +27,8 @@ const needLoginAtom = atom<boolean>({
 });
 
 const socketVerifyCodeAtom = atom<string>({
-  key:'socketVerifyCodeAtom',
-  default:'',
+  key: 'socketVerifyCodeAtom',
+  default: '',
 });
 
-export { userDataAtom, userStatusAtom, needLoginAtom,socketVerifyCodeAtom  };
+export { userDataAtom, userStatusAtom, needLoginAtom, socketVerifyCodeAtom };

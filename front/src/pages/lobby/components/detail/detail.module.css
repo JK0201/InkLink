@@ -71,6 +71,36 @@
   padding: 0 1rem;
 }
 
+.pass_input {
+  margin: 1rem 0;
+  border-radius: 8px;
+  font-size: 3.2rem;
+  width: 25rem;
+  text-align: center;
+  pointer-events: none;
+  position: relative;
+  padding-left: 2rem;
+  letter-spacing: 2rem;
+}
+
+.btn_pass_box {
+  display: flex;
+}
+
+.password_btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  width: 10rem;
+  height: 5rem;
+  padding: 0 1rem;
+  font-size: 3.2rem;
+  border: 1px solid lightgray;
+  margin: 0.4rem;
+}
+
 /* SignOut */
 .sign_out_btn {
   cursor: pointer;

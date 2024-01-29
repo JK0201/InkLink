@@ -21,10 +21,6 @@ function Chat() {
     }
   }, [chat]);
 
-  useEffect(()=>{
-    console.log(chat);
-  },[chat]);
-
   useEffect(() => {
     modalHandler(style, main.chat, setVisible, setFade);
   }, [main.chat]);
@@ -61,12 +57,11 @@ function Chat() {
                     <span className={style.chat_enter_id}>{item.user}</span>
                     <span>{item.msg}</span>
                   </div>
-                ) : item.type === 'enter' ? (
-                  <div key={idx} className={style.chat_notice}>
-                    <span className={style.chat_enter_id}>{item.user}</span>
-                    <span>님이 입장하셨습니다.</span>
-                  </div>
-                ) : item.type === 'chat' ? (
+                ) : item.type === 'enter' ? // <div key={idx} className={style.chat_notice}>
+                //   <span className={style.chat_enter_id}>{item.user}</span>
+                //   <span>님이 입장하셨습니다.</span>
+                // </div>
+                null : item.type === 'chat' ? (
                   <div key={idx} className={style.chat_msg}>
                     <span className={style.chat_id}>{item.user}</span>
                     <span>: {item.msg}</span>

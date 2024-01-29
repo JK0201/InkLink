@@ -13,6 +13,7 @@ interface ListType {
 }
 
 interface DetailType {
+  password: boolean;
   signOut: boolean;
   notice: boolean;
   user: boolean;
@@ -43,4 +44,14 @@ interface RoomInfoType {
   private: boolean;
   password: string;
   status: number;
+}
+
+interface RoomPassType {
+  id: string;
+  password: string;
+}
+
+interface IncomingDataType {
+  rooms: RoomInfoType[];
+  users: userData[];
 }

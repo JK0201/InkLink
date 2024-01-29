@@ -1,24 +1,23 @@
 import './lobby.css';
-import { Header, Footer, LobbyMain, BgDesktop, BgMobile, SignOut, NoticeDetail, UserDetail } from './index';
+import { Header, Footer, LobbyMain, BgDesktop, BgMobile, SignOut, NoticeDetail, UserDetail, Password } from './index';
 import MediaQuery from 'react-responsive';
 import { mobileModal } from '../../recoil/lobby';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 import { socketAtom } from '../../recoil/socket';
 import { userStatusAtom } from '../../recoil/user';
-import { lobbyChat } from '../../recoil/chat';
-import { noticeList, roomList } from '../../recoil/detail';
+import { newIncomingData, noticeList, roomList } from '../../recoil/detail';
 import RoomDetail from './components/detail/RoomDetail';
 import axios from 'axios';
 
 function Lobby() {
   const socket = useRecoilValue(socketAtom);
   const setMenu = useSetRecoilState(mobileModal);
-  const [status, setStatus] = useRecoilState(userStatusAtom);
-  const [chat, setChat] = useRecoilState(lobbyChat);
-  const [room, setRoom] = useRecoilState(roomList);
+  const setStatus = useSetRecoilState(userStatusAtom);
+  const setRoom = useSetRecoilState(roomList);
   const [notice, setNotice] = useRecoilState(noticeList);
   const [loading, setLoading] = useState<boolean>(false);
+  const setNewData = useSetRecoilState(newIncomingData);
 
   useEffect(() => {
     axios({
@@ -34,12 +33,9 @@ function Lobby() {
   }, []);
 
   useEffect(() => {
-    // socket?.emit('enterLobby');
-
-    socket?.on('getListData', (data): void => {
-      console.log(data);
-      setStatus([...data.users]);
-      setRoom([...data.rooms]);
+    socket?.on('initData', (data) => {
+      setStatus(data.users);
+      setRoom(data.rooms);
     });
 
     let timer = setTimeout(() => {
@@ -49,20 +45,16 @@ function Lobby() {
     }, 1000);
 
     return () => {
-      socket?.off('getListData');
+      socket?.off('initData');
       clearTimeout(timer);
     };
   }, [socket, notice]);
 
-  // useEffect(() => {
-    // socket?.on('broadcastLobby', (data) => {
-    //   setChat((prevChat) => [...prevChat, data]);
-    // });
-
-    // return () => {
-    //   socket?.off('broadcastLobby');
-    // };
-  // }, [chat]);
+  useEffect(() => {
+    socket?.on('getListData', (data) => {
+      setNewData(data);
+    });
+  }, [socket]);
 
   const mobileMenuHandler = () => {
     setMenu(false);
@@ -72,6 +64,7 @@ function Lobby() {
     <>
       {loading ? (
         <div className="lobby">
+          <Password />
           <NoticeDetail />
           <UserDetail />
           <SignOut />

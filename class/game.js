@@ -12,7 +12,7 @@ var Room = /** @class */ (function () {
             customs: [],
             owner: '',
             hintType: 0,
-            topicType: 0
+            topicType: 0,
         };
         this._status = 0;
         this._timer = 0;
@@ -26,12 +26,12 @@ var Room = /** @class */ (function () {
     Room.prototype.infoForList = function () {
         return {
             id: this._id,
-            roomNumber: this._roomNumber,
             title: this._title,
             currentUser: this._users.length,
             maxUser: this._setting.max,
             password: this._password,
-            status: this._status
+            status: this._status,
+            roomNumber: this._roomNumber,
         };
     };
     Room.prototype.addUser = function (data) {
@@ -80,30 +80,50 @@ var Room = /** @class */ (function () {
         return this._setting.max === -1 || this._setting.max > this._users.length;
     };
     Object.defineProperty(Room.prototype, "users", {
-        get: function () { return this._users; },
+        get: function () {
+            return this._users;
+        },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(Room.prototype, "setting", {
-        get: function () { return this._setting; },
+        get: function () {
+            return this._setting;
+        },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(Room.prototype, "id", {
-        get: function () { return this._id; },
+        get: function () {
+            return this._id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Room.prototype, "roomNumber", {
+        get: function () {
+            return this._roomNumber;
+        },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(Room.prototype, "answer", {
-        get: function () { return this._answer; },
-        set: function (answer) { this._answer = answer; },
+        get: function () {
+            return this._answer;
+        },
+        set: function (answer) {
+            this._answer = answer;
+        },
         enumerable: false,
         configurable: true
     });
-    ;
     Object.defineProperty(Room.prototype, "timer", {
-        get: function () { return this._timer; },
-        set: function (sec) { this._timer = sec; },
+        get: function () {
+            return this._timer;
+        },
+        set: function (sec) {
+            this._timer = sec;
+        },
         enumerable: false,
         configurable: true
     });
@@ -159,7 +179,8 @@ var Game = /** @class */ (function () {
                         r.delUserBySocketID(socket.id);
                         //모든 인원이 나갔으면 방을 삭제한다.
                         // if (r.users.length === 0) {
-                        if (r.users.length === 0 && r.id !== 'test') { //테스트방이 아닐때만 삭제.
+                        if (r.users.length === 0 && r.id !== 'test') {
+                            //테스트방이 아닐때만 삭제.
                             _this.deleteRoom(v);
                         }
                         else {
@@ -180,11 +201,12 @@ var Game = /** @class */ (function () {
                 });
                 //접속정보에서도 위치를 바꿔준다.
                 user_1.location = location;
+                user_1.roomNumber = newRoom.roomNumber;
                 //그리고 들어옴 메세지를 보내준다.
                 io.to(location).emit('postChat', {
                     type: 'enter',
                     user: user_1.nick,
-                    msg: ''
+                    msg: '',
                 });
                 //로비의 모두에게 최신화 시켜준다.
                 io.to('main').emit('getListData', this.getAlls());
@@ -204,6 +226,7 @@ var Game = /** @class */ (function () {
     //유저 연결끊김
     Game.prototype.disconnectUser = function (io, socketID) {
         //유저 정보를 가져온다.
+        // const socket = io.sockets.sockets[socketID];
         var user = this._userList.find(function (v) { return v.socket_id === socketID; });
         //올바르지 않은 접근이면 false.
         if (!user)
@@ -216,7 +239,7 @@ var Game = /** @class */ (function () {
         io.to(oldRoom).emit('postChat', {
             type: 'leave',
             user: user.nick,
-            msg: ''
+            msg: '',
         });
         //접속정보목록에서도 제거해준다.
         this._userList = this._userList.filter(function (v) { return v.socket_id !== socketID; });
@@ -226,16 +249,16 @@ var Game = /** @class */ (function () {
     Game.prototype.whereAmI = function (socket_id) {
         //console.log(socket.rooms); {<socket-id>,'room'};
         /*
-        const room = io.sockets.adapter.rooms[roomId];
-
-        if (room && room.sockets) {
-        // 해당 방에 속한 소켓들의 ID 목록을 얻을 수 있습니다.
-        const socketsInRoom = Object.keys(room.sockets);
-        console.log(`소켓이 ${roomId} 방에 속해있습니다. 소켓 ID 목록: ${socketsInRoom}`);
-        } else {
-        console.log(`소켓이 ${roomId} 방에 속해있지 않습니다.`);
-        }
-        */
+            const room = io.sockets.adapter.rooms[roomId];
+    
+            if (room && room.sockets) {
+            // 해당 방에 속한 소켓들의 ID 목록을 얻을 수 있습니다.
+            const socketsInRoom = Object.keys(room.sockets);
+            console.log(`소켓이 ${roomId} 방에 속해있습니다. 소켓 ID 목록: ${socketsInRoom}`);
+            } else {
+            console.log(`소켓이 ${roomId} 방에 속해있지 않습니다.`);
+            }
+            */
         // const user = this._userList.find(v=>v.socket_id===socket_id);
         // return user?.location || null;
     };
@@ -243,7 +266,7 @@ var Game = /** @class */ (function () {
     Game.prototype.getAlls = function () {
         return {
             rooms: this.roomList,
-            users: this.userList
+            users: this.userList,
         };
     };
     Object.defineProperty(Game.prototype, "roomList", {
@@ -263,7 +286,8 @@ var Game = /** @class */ (function () {
                     nick: v.nick,
                     profile: v.profile,
                     total: v.total,
-                    location: v.location
+                    location: v.location,
+                    roomNumber: v.roomNumber,
                 };
             });
             return result;

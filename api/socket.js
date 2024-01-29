@@ -21,7 +21,6 @@ const socket = async (server) => {
 
   io.on('connection', async (socket) => {
     // console.log('Socket >>> Connected ' + socket.id + "\n" + JSON.stringify(socket.handshake.query));
-    
 
     let v = await verify(socket.handshake.query.eong);
     if (!v) {
@@ -30,7 +29,7 @@ const socket = async (server) => {
       return;
     } else {
       const room = socket.handshake.query.location;
-      // console.log(room);
+      let roomId = game.getRoomById(room);
       let data = {
         nick: v.nick,
         total: v.total,
@@ -38,14 +37,14 @@ const socket = async (server) => {
         profile: v.profile,
         role: v.role,
         socket_id: socket.id,
-        location: game.getRoomById(room) ? room : 'main'
+        location: roomId ? room : 'main',
+        roomNumber: roomId ? roomId._roomNumber : 0,
       };
-      console.log(`${socket.id} + ${data.location}`);
       game.connectUser(data);
-      game.changeLocation(io,socket,data.location);
-      // socket.join(data.location);
+      game.changeLocation(io, socket, data.location);
+      console.log(game.getAlls());
       socket.emit('initSocket', { id: data.socket_id, loc: data.location });
-      
+      socket.emit('initData', game.getAlls());
     }
 
     socket.on('disconnect', () => {

@@ -1,9 +1,9 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import style from './list.module.css';
-import { detailModal, listModal, mainModal } from '../../../../recoil/lobby';
+import { detailModal, listModal, mainModal, refreshRoom } from '../../../../recoil/lobby';
 import { useEffect, useState } from 'react';
 import { closeHandler, modalHandler } from '../../../../api/modal';
-import { roomList } from '../../../../recoil/detail';
+import { newIncomingData, roomList, roomPassword } from '../../../../recoil/detail';
 import { useNavigate } from 'react-router-dom';
 import { socketAtom } from '../../../../recoil/socket';
 
@@ -13,9 +13,12 @@ function RoomList() {
   const [visible, setVisible] = useState<string>(style.d_hide);
   const [fade, setFade] = useState<string>(style.fade_out);
   const [detail, setDetail] = useRecoilState(detailModal);
-  const room = useRecoilValue(roomList);
+  const [room, setRoom] = useRecoilState(roomList);
   const socket = useRecoilValue(socketAtom);
+  const setRoomPass = useSetRecoilState(roomPassword);
   const navigate = useNavigate();
+  const newData = useRecoilValue(newIncomingData);
+  const [refreshRoomBtn, setRefreshRoomBtn] = useRecoilState(refreshRoom);
 
   useEffect(() => {
     modalHandler(style, list.room, setVisible, setFade);
@@ -30,10 +33,39 @@ function RoomList() {
     setDetail({ ...detail, room: true });
   };
 
-  const joinRoom = (roomId: string) => {
-    console.log(roomId);
-    socket?.emit('joinRoom', { roomId });
-    // navigate(`/room/${id}`);
+  const joinRoom = (idx: number) => {
+    const { id, password } = room[idx];
+
+    if (password) {
+      setDetail({ ...detail, password: true });
+      setRoomPass({ id, password });
+    } else {
+      socket?.emit('joinRequest', { id });
+      socket?.on('enterRoom', (url) => {
+        console.log(url);
+        navigate(`/room/${url}`);
+      });
+    }
+
+    return () => {
+      socket?.off('enterRoom');
+    };
+  };
+
+  const refreshRoomList = () => {
+    setRefreshRoomBtn(false);
+    let timer: NodeJS.Timeout;
+    if (newData.rooms.length > 0) {
+      setRoom(newData.rooms);
+    }
+
+    timer = setTimeout(() => {
+      setRefreshRoomBtn(true);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   };
 
   return (
@@ -45,6 +77,9 @@ function RoomList() {
               방생성
             </div>
             <div className={style.room_btn}>퀵매칭</div>
+            <div className={`${refreshRoomBtn ? style.room_btn : style.room_btn_disabled}`} onClick={refreshRoomList}>
+              re
+            </div>
           </div>
           <img
             className={style.close_btn}
@@ -84,7 +119,7 @@ function RoomList() {
                 <div className={style.list_item_right}>
                   <div className={style.room_name}>
                     <p>{item.title}</p>
-                    {item.private ? (
+                    {item.password ? (
                       <img alt="user-icon" src={process.env.REACT_APP_BUCKET_URL + 'icons/lock_icon.svg'} />
                     ) : null}
                   </div>
@@ -92,14 +127,14 @@ function RoomList() {
                     {item.status === 0 ? (
                       <>
                         <p className={style.waiting}>WAITING</p>
-                        <div className={style.enter_btn} onClick={() => joinRoom(item.id)}>
+                        <div className={style.enter_btn} onClick={() => joinRoom(idx)}>
                           입장
                         </div>
                       </>
                     ) : (
                       <>
                         <p className={style.playing}>PLAYING</p>
-                        <div className={style.enter_btn} onClick={() => joinRoom(item.id)}>
+                        <div className={style.enter_btn} onClick={() => joinRoom(idx)}>
                           입장
                         </div>
                       </>

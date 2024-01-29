@@ -4,7 +4,6 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { detailModal } from '../../../../recoil/lobby';
 import { roomInfo } from '../../../../recoil/detail';
 import { socketAtom } from '../../../../recoil/socket';
-import { userDataAtom } from '../../../../recoil/user';
 import { useNavigate } from 'react-router-dom';
 
 function RoomDetail() {
@@ -14,7 +13,6 @@ function RoomDetail() {
   const [visible, setVisible] = useState<string>('');
   const [hide, setHide] = useState<string>('d_hide');
   const socket = useRecoilValue(socketAtom);
-  const userData = useRecoilValue(userDataAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +29,7 @@ function RoomDetail() {
     resetRoom();
   };
 
-  const roomHandler = () => {
+  const roomCreatorHandler = () => {
     if (!titleValid(room.title)) {
       console.log('제목 미입력');
       return;
@@ -48,14 +46,14 @@ function RoomDetail() {
     }
 
     socket?.emit('createRoom', room);
-    closeRoomCreator();
 
-    socket?.on('enterRoom', (url) => {
+    socket?.on('enterCreatedRoom', (url) => {
+      closeRoomCreator();
       navigate(`/room/${url}`);
     });
 
     return () => {
-      socket?.off('enterRoom');
+      socket?.off('enterCreatedRoom');
     };
   };
 
@@ -118,7 +116,7 @@ function RoomDetail() {
             <div className={style.sign_out_btn} onClick={closeRoomCreator}>
               취소
             </div>
-            <div className={`${style.sign_out_btn} ${style.btn_main}`} onClick={roomHandler}>
+            <div className={`${style.sign_out_btn} ${style.btn_main}`} onClick={roomCreatorHandler}>
               확인
             </div>
           </div>

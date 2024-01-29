@@ -1,5 +1,3 @@
-let roomNum = 0;
-
 exports.roomController = {
   socket: (socket, io, game) => {
     socket.on('createRoom', (data) => {
@@ -25,23 +23,31 @@ exports.roomController = {
       const roomId = Math.random().toString(36).substring(2, 11);
 
       game.createRoom(roomId, data.title, data.maxUser, data.password);
-      game.changeLocation(socket.id, roomId);
-
-      console.log(game.roomList);
-      //나중에 refresh로 바꿀것
-      io.emit('roomList', game.getAlls());
-      socket.emit('enterRoom', roomId);
+      game.changeLocation(io, socket, roomId);
+      socket.emit('enterCreatedRoom', roomId);
     });
 
-    socket.on('joinRoom', (data) => {
-      console.log(data.roomId);
-      game.changeLocation(socket.id, data.roomId);
-      // const idx = roomList.findIndex((item) => {
-      //   return item.roomId === dataId;
-      // });
+    socket.on('joinRequest', (data) => {
+      const room = game.getRoomById(data.id);
 
-      // if (idx !== -1) {
-      // }
+      if (!room) {
+        console.log('방이 존재하지 않음');
+        return;
+      }
+
+      if (room._password) {
+        if (!passwordValid(data.password)) {
+          console.log('비밀번호 형식 오류');
+          return;
+        }
+
+        if (room._password !== data.password) {
+          console.log('비밀번호 불일치');
+          return;
+        }
+      }
+      game.changeLocation(io, socket, data.id);
+      socket.emit('enterRoom', data.id);
     });
   },
 };

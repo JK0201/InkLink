@@ -17,14 +17,14 @@ function MemberDetail() {
     }
   }, [detail.user]);
 
-  const closeUserInfo = () => {
+  const userInfoHandler = () => {
     setdetail({ ...detail, user: false });
     setVisible('');
     setHide('d_hide');
   };
 
   return (
-    <div className={`detail_modal_bg ${visible}`} onClick={closeUserInfo}>
+    <div className={`detail_modal_bg ${visible}`} onClick={userInfoHandler}>
       <div className="detail_modal_box">
         <div className={`detail_modal ${hide}`} onClick={(e) => e.stopPropagation()}>
           {/* <img
@@ -34,7 +34,7 @@ function MemberDetail() {
           /> */}
           <p className={style.title}>{user.nick}</p>
           <div className={style.btn_box}>
-            <div className={`${style.sign_out_btn} ${style.btn_main}`} onClick={closeUserInfo}>
+            <div className={`${style.sign_out_btn} ${style.btn_main}`} onClick={userInfoHandler}>
               확인
             </div>
           </div>
